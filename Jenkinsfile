@@ -44,5 +44,15 @@ node {
             archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
             sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
         }
+
+        stage('Post-Deliver') {
+        steps {
+            script {
+                // Archive the deliverable and clean up
+                archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
+            }
+        }
+    }
     }
 }
