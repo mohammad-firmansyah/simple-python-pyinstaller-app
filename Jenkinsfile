@@ -42,13 +42,8 @@ node {
 
     // Post steps for success
     stage('Post-Deliver') {
-        steps {
-            script {
-                // Archive the deliverable and clean up
-                archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
-                sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-            }
-        }
+        // Archive the deliverable and clean up
+        archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals"
+        sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
     }
 }
-
