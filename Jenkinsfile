@@ -8,34 +8,25 @@ node {
 
     stage('Test') {
         docker.image('qnib/pytest').inside {
-            // Run pytest and generate JUnit XML report
             sh 'py.test --junit-xml test-reports/results.xml sources/test_calc.py'
         }
-        // Always publish JUnit test results
+        
         junit 'test-reports/results.xml'
     }
 
+     stage('Manual Approval') {
+         input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', ok: 'Proceed'
+    }
+    
     stage('Deliver') {
         def VOLUME = "${pwd()}/sources:/src"
         def IMAGE = 'cdrx/pyinstaller-linux:python2'
-        
-        input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', submitter: 'user'
-        
-        
-        dir("${BUILD_ID}") {
-            unstash(name: 'compiled-results')
-            sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
-            archiveArtifacts "${BUILD_ID}/sources/dist/add2vals"
-            sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
-        }
+        unstash(name: 'compiled-results')
+        sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+        archiveArtifacts "sources/dist/add2vals"
+        sleep time: 60 , unit: 'SECONDS'
 
-    
         } 
     
   
-}
-
-def myCustomFunction() {
-    // Custom logic goes here
-    return "Custom result"
 }
