@@ -45,11 +45,7 @@ pipeline {
                     // Disable debugging
                     set +x
             }
-            // post {
-            //     success {
-            //         archiveArtifacts 'dist/add2vals'
-            //     }
-            // }
+           
         }
     }
 }
