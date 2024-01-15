@@ -48,6 +48,7 @@ pipeline {
 
             steps {
                   // Prompt for user input
+                    sh 'sleep 1'
                     input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', submitter: 'user'
                     dir(path: env.BUILD_ID) { 
                         unstash(name: 'compiled-results') 
