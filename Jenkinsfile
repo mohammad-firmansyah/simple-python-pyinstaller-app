@@ -38,12 +38,28 @@ pipeline {
                 VOLUME = '$(pwd)/sources:/src'
                 IMAGE = 'cdrx/pyinstaller-linux:python2'
             }
+            // steps {
+            //     dir(path: env.BUILD_ID) { 
+            //         unstash(name: 'compiled-results') 
+            //         sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
+            //     }
+                
+            // }
+
             steps {
-                dir(path: env.BUILD_ID) { 
-                    unstash(name: 'compiled-results') 
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
-                }
+                  // Prompt for user input
+                    input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', submitter: 'user'
+        
+                    // Enable debugging for script execution
+                    set -x
+        
+                    // Perform PyInstaller
+                    sh 'pyinstaller --onefile sources/add2vals.py'
+        
+                    // Disable debugging
+                    set +x
             }
+            
             post {
                 success {
                     archiveArtifacts "${env.BUILD_ID}/sources/dist/add2vals" 
