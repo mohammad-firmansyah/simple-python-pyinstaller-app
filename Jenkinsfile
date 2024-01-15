@@ -15,7 +15,7 @@ node {
     }
 
      stage('Manual Approval') {
-         input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', ok: 'Proceed'
+         input message: 'Lanjutkan ke tahap Deploy?', ok: 'Proceed'
     }
     
     stage('Deliver') {
