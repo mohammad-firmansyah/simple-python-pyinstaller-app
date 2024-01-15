@@ -21,22 +21,12 @@ node {
         
         input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', submitter: 'user'
         
-        timeout(time: 5, unit: 'SECONDS') {
-            catchError {
-                dir("${BUILD_ID}") {
+        
+        dir("${BUILD_ID}") {
                     unstash(name: 'compiled-results')
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
                 }
-            }
-        }
 
-         // A simple step using 'echo'
-        echo 'Hello, World!'
-
-        // Another step using 'sh' (shell)
-        sh 'ls -la'
-
-        // A step using a custom script
         script {
             def result = myCustomFunction()
             echo "Custom function result: ${result}"
