@@ -8,13 +8,11 @@ node {
 
     stage('Test') {
         docker.image('qnib/pytest').inside {
+            // Run pytest and generate JUnit XML report
             sh 'py.test --junit-xml test-reports/results.xml sources/test_calc.py'
         }
-        post {
-            always {
-                junit 'test-reports/results.xml'
-            }
-        }
+        // Always publish JUnit test results
+        junit 'test-reports/results.xml'
     }
 
     stage('Deliver') {
