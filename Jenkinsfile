@@ -18,8 +18,10 @@ node {
     stage('Deliver') {
         def VOLUME = "${pwd()}/sources:/src"
         def IMAGE = 'cdrx/pyinstaller-linux:python2'
-
-       timeout(time: 5, unit: 'SECONDS') {
+        
+        input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', submitter: 'user'
+        
+        timeout(time: 5, unit: 'SECONDS') {
             catchError {
                 dir("${BUILD_ID}") {
                     unstash(name: 'compiled-results')
