@@ -30,6 +30,18 @@ node {
             }
         }
 
+         // A simple step using 'echo'
+        echo 'Hello, World!'
+
+        // Another step using 'sh' (shell)
+        sh 'ls -la'
+
+        // A step using a custom script
+        script {
+            def result = myCustomFunction()
+            echo "Custom function result: ${result}"
+        }
+
 
         post {
             success {
@@ -38,4 +50,9 @@ node {
             }
         }
     }
+}
+
+def myCustomFunction() {
+    // Custom logic goes here
+    return "Custom result"
 }
