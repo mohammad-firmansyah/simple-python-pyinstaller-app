@@ -19,13 +19,15 @@ node {
         def VOLUME = "${pwd()}/sources:/src"
         def IMAGE = 'cdrx/pyinstaller-linux:python2'
 
-        // Prompt for user input
-        input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', submitter: 'user'
-
-        dir("${BUILD_ID}") {
-            unstash(name: 'compiled-results')
-            sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+       timeout(time: 5, unit: 'SECONDS') {
+            catchError {
+                dir("${BUILD_ID}") {
+                    unstash(name: 'compiled-results')
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                }
+            }
         }
+
 
         post {
             success {
