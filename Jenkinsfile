@@ -49,15 +49,11 @@ pipeline {
             steps {
                   // Prompt for user input
                     input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)', submitter: 'user'
-        
-                    // Enable debugging for script execution
-                    set -x
-        
-                    // Perform PyInstaller
-                    sh 'pyinstaller --onefile sources/add2vals.py'
-        
-                    // Disable debugging
-                    set +x
+                    dir(path: env.BUILD_ID) { 
+                        unstash(name: 'compiled-results') 
+                        sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'" 
+                    }
+                
             }
             
             post {
