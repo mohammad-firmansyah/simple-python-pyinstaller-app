@@ -33,10 +33,11 @@ pipeline {
                 }
             }
             steps {
-                 
-                 sh sleep 1
-                 input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)'
+                 set -x
+                 sh 'sleep 1'
+                 sh "input message: 'Sudah selesai menggunakan Python App? (Klik "Proceed" untuk mengakhiri)'"
                  sh 'pyinstaller --onefile sources/add2vals.py'
+                 set -x
             }
             post {
                 success {
